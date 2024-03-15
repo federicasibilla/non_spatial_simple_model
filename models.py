@@ -57,25 +57,34 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
 
     N, R = np.array(N),np.array(R)
 
-    # plot results
-    plt.figure(figsize=(10, 5))
+    # Plot Time Series for Species
+    plt.figure(figsize=(8, 5))
     plt.title("Time Series for Species")
     plt.xlabel("Time")
     plt.ylabel("Population")
 
+    colors = plt.cm.tab10.colors  # Use a color palette for better visualization
+
     for i in range(N.shape[1]):                                       
-      plt.plot(N[:, i], label=f'Species {cp_matrix.index.tolist()[i]}')
+        plt.plot(N[:, i], label=f'Species {cp_matrix.index.tolist()[i]}', color=colors[i], linewidth=1)
+
     plt.legend()
+    plt.grid(True)  # Add grid lines
+    plt.tight_layout()  # Adjust layout for better spacing
     plt.show()
 
-    plt.figure(figsize=(10, 5))
+    # Plot Time Series for Resources
+    plt.figure(figsize=(8, 5))
     plt.title("Time Series for Resources")
     plt.xlabel("Time")
     plt.ylabel("Concentration")
 
     for i in range(R.shape[1]):                                       
-      plt.plot(R[:, i], label=f'Resource {com_matrix.columns.tolist()[i]}')
+      plt.plot(R[:, i], label=f'Resource {com_matrix.columns.tolist()[i]}', color=colors[i], linewidth=1)
+
     plt.legend()
+    plt.grid(True)  # Add grid lines
+    plt.tight_layout()  # Adjust layout for better spacing
     plt.show()
 
     return np.array(N), np.array(R)

@@ -47,7 +47,7 @@ species_dict_cfr = {'A' : 'specialist1',
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_cfr = {'x' : ['MA,MB', 0.4, 0.4]                                        
+nutrients_dict_cfr = {'x' : ['MA,MB', 0.5, 0.5]                                        
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
@@ -62,19 +62,19 @@ def get_matrices_cfr():
 
 # fix parameters
 parameters_dict_cfr = { # initial resource availability
-                        'R_0_cfr' : np.array([500]),   
+                        'R_0_cfr' : np.array([300]),   
                         # initial toxins concentration
                         'T_0_cfr' : np.array([]),
                         # initial species abundance                                                
-                        'N_0_cfr' : np.array([100,100,100]), 
+                        'N_0_cfr' : np.array([100,100,1]), 
                         # inverse reinsertion rate                                                  
                         'tau_cfr' : np.array([1]), 
                         # toxins inverse insetrion rate
                         'tau_t_cfr' : np.array([]),
                         # dilution time
-                        'tau_dil_cfr' : 50,
+                        'tau_dil_cfr' : 100,
                         # intrinsic growth rates                                              
-                        'g_cfr' : np.array([0.4,0.5,0.1]), 
+                        'g_cfr' : np.array([1,0.8,0.1]), 
                         # maintainance energy requirements                                                    
                         'm_cfr' : np.array([0.1,0.1,0.]),  
                         # external leakage of nutrients                                                         
@@ -82,15 +82,13 @@ parameters_dict_cfr = { # initial resource availability
                         # toxins leakage
                         'l_t_cfr' : np.array([]),
                         # energy content of resources                                               
-                        'w_cfr' : np.array([0.9]), 
+                        'w_cfr' : np.array([1]), 
                         # energy content (negative) in toxins i.e. toxicity (?
                         'w_t_cfr' : np.array([]),
                         # maximal absorption for Monod function
-                        'sig_max_cfr' : 2,   
+                        'sig_max_cfr' : 1,   
                         # vector with toxins maximal absorption
-                        'k_cfr' : np.array([]),          
-                        # fix time of simulation  
-                        't_N' : 1000 
+                        'k_cfr' : np.array([])          
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -103,7 +101,7 @@ species_dict_cf = {'A' : 'specialist1',
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
 nutrients_dict_cf = {'x' : ['AB', 0.4],
-                      'y' : ['BA', 0.4]                                        
+                     'y' : ['BA', 0.4]                                        
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
@@ -128,9 +126,9 @@ parameters_dict_cf = { # initial resource availability
                         # toxins inverse insetrion rate
                         'tau_t_cf' : np.array([]),
                         # dilution time
-                        'tau_dil_cf' : 50,
+                        'tau_dil_cf' : 100,
                         # intrinsic growth rates                                              
-                        'g_cf' : np.array([0.4,0.5]), 
+                        'g_cf' : np.array([1,0.8]), 
                         # maintainance energy requirements                                                    
                         'm_cf' : np.array([0.1,0.1]),  
                         # external leakage of nutrients                                                         
@@ -138,15 +136,13 @@ parameters_dict_cf = { # initial resource availability
                         # toxins leakage
                         'l_t_cf' : np.array([]),
                         # energy content of resources                                               
-                        'w_cf' : np.array([0.9,0.9]), 
+                        'w_cf' : np.array([1,1]), 
                         # energy content (negative) in toxins i.e. toxicity (?
                         'w_t_cf' : np.array([]),
                         # maximal absorption for Monod function
-                        'sig_max_cf' : 2,   
+                        'sig_max_cf' : 1,   
                         # vector with toxins maximal absorption
-                        'k_cf' : np.array([]),          
-                        # fix time of simulation  
-                        't_N' : 500 
+                        'k_cf' : np.array([])          
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -179,7 +175,7 @@ parameters_dict_pm = { # initial resource availability
                         # initial species abundance                                                
                         'N_0_pm' : np.array([1,100]), 
                         # inverse reinsertion rate                                                  
-                        'tau_pm' : np.array([2]), 
+                        'tau_pm' : np.array([1]), 
                         # toxins inverse insetrion rate
                         'tau_t_pm' : np.array([]),
                         # dilution time
@@ -187,9 +183,9 @@ parameters_dict_pm = { # initial resource availability
                         # intrinsic growth rates                                              
                         'g_pm' : np.array([0.,1]), 
                         # maintainance energy requirements                                                    
-                        'm_pm' : np.array([0.,0.8]),  
+                        'm_pm' : np.array([0.,0.5]),  
                         # external leakage of nutrients                                                         
-                        'l_pm' : np.array([0.]),  
+                        'l_pm' : np.array([0.1]),  
                         # toxins leakage
                         'l_t_pm' : np.array([]),
                         # energy content of resources                                               
