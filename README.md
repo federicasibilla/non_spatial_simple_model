@@ -18,3 +18,6 @@ The model requires the following libraries:
 * *aux.py* is the file containing all the auxiliary functions the model uses, sucas the uptake function, the replenishment function and the dynamics of chemicals anpopulations
 * *specifications.py* is the file where the networks are defined and thparameters fixed; a Community class is defined to facilitate the running of the model; thnetworks are defined through 3 dictionaries: the species dictionary (keys=lettersvalues=name of species), the nutrients dictionary (keys=nutrient, values=couples of nodes iconnects ond strength of the connection i.e. uptake rate) and the toxins dictionar(keys=toxin, values=couples of nodes it connects ond strength of the connection i.e. uptakrate)
 * *make_network.py* is the file where functions to create network and matricestarting from the dictionaries is defined
+
+# Read *simple_nonspatial_model.pdf* for a deeper description of the model
+
