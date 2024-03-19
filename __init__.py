@@ -1,8 +1,9 @@
 """
-main code for running the model, here a community class is defined and the parameters are set
+Main code for running the model, here a network from specifications.py is loaded and the simulation is run until steady state of population
 
 """
 
+from re import S
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -27,6 +28,7 @@ param_dict = {}
 for old_key, new_key in zip(param_dict_specific.keys(), keys_list):
         param_dict[new_key] = param_dict_specific[old_key]
 
+
 # prepare matrices or import them
 matrices = get_matrices_pm()
 # matrices file paths
@@ -36,7 +38,7 @@ matrices = get_matrices_pm()
 y_0 = [param_dict['N_0'],param_dict['R_0'],param_dict['T_0']]
 
 # initialize community
-community = Community(y_0,[dNdt,dR_ss],param_dict,matrices)
+community = Community(y_0,[dNdt,dR_ss,dR_ss_sep,dT_ss_sep],param_dict,matrices)
 
 # run model
 community.run_steady_state()

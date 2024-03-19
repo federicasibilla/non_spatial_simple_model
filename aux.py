@@ -89,4 +89,32 @@ def dR_ss(RT, N, com_matrix, met_matrix, R_0, T_0, tau_r, tau_t, tau_dil, w_r, w
     # also add dilution
     return out_replenishment(tau, RT_0, R_masked)-np.dot((J_in(com_matrix, R_masked, w, sig_max)/w).T,N)+np.dot((J_out(com_matrix, R_masked, l, w, met_matrix, sig_max)/w).T,N)-(1/tau_dil)*R_masked
 
+# dT_ss_sep: 
+# takes    : 
+# returns  : 
+
+def dT_ss_sep(T, N, inh_matrix, tprod_matrix, tau_dil, sig_max):
+
+    # treat complete depletion
+    T_masked = T.copy()
+    T_masked[T < 1] = 0
+
+    # also add dilution
+    return -np.dot(up_function(inh_matrix, T_masked, sig_max).T,N)+np.dot(tprod_matrix.T,N)/(1+np.dot(tprod_matrix.T,N))-(1/tau_dil)*T_masked
+
+# dR_ss_sep: 
+# takes    : 
+# returns  :
+
+def dR_ss_sep(R, N, cp_matrix, met_matrix, R_0, w, tau, tau_dil, l, sig_max):
+
+    # treat complete depletion
+    R_masked = R.copy()
+    R_masked[R < 1] = 0
+
+    met_matrix_res = met_matrix.iloc[:len(R_masked),:len(R_masked)]
+    met_matrix_res = met_matrix_res/np.sum(met_matrix_res, axis=0)
+    
+    # also add dilution
+    return out_replenishment(tau, R_0, R_masked)-np.dot((J_in(cp_matrix, R_masked, w, sig_max)/w).T,N)+np.dot((J_out(cp_matrix, R_masked, l, w, met_matrix_res, sig_max)/w).T,N)-(1/tau_dil)*R_masked
 

@@ -74,7 +74,7 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     G_T = nx.DiGraph()
     G_T.add_nodes_from(species_dict)
     for i, (source, target, _) in enumerate(edges_t):
-        G_T.add_edge(source, target, weight=edges[i][2], label=labels_t[i])
+        G_T.add_edge(source, target, weight=edges_t[i][2], label=labels_t[i])
     # visualize graph
     agraph = to_agraph(G_T)
     for u, v, data in G_T.edges(data=True):
@@ -110,9 +110,22 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     # save inhibition matrix
     inhibition_matrix.to_csv('/Users/federicasibilla/Documenti/Tesi/Codice/non_spatial_simple_model/inhibition_matrix.csv', index=True, mode='w')   
 
+    # create toxins production matrix from toxins graph
+    species = [node for node in G_T.nodes()]
+    toxins = sorted(set(edge for _, _, edge in G_T.edges(data='label')))
+
+    tprod_matrix = pd.DataFrame(0, index=species, columns=toxins)
+    
+    for source, target, attr in G_T.edges(data=True):
+        if attr['label'] in toxins:
+            tprod_matrix.loc[source, attr['label']] = attr['weight']
+
+    # save tprod matrix
+    tprod_matrix.to_csv('/Users/federicasibilla/Documenti/Tesi/Codice/non_spatial_simple_model/tprod_matrix.csv', index=True, mode='w')
+
     # unite nutrients and toxins
     chemicals = nutrients+toxins 
-    G_combined = nx.DiGraph()
+    G_combined = nx.MultiDiGraph()
     G_combined.add_nodes_from(species_dict)
     G_combined.add_edges_from(G.edges(data=True))
     G_combined.add_edges_from(G_T.edges(data=True))
@@ -123,9 +136,10 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     combined_matrix = pd.DataFrame(0, index=species, columns=chemicals)
     
     for source, target, attr in G_combined.edges(data=True):
+
         if attr['label'] in chemicals:
             combined_matrix.loc[target, attr['label']] = attr['weight']
-
+        
     # save combined matrix
     combined_matrix.to_csv('/Users/federicasibilla/Documenti/Tesi/Codice/non_spatial_simple_model/total_matrix.csv', index=True, mode='w')
 
@@ -148,7 +162,7 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     # save metabolic matrix
     nor_metabolic_matrix.to_csv('/Users/federicasibilla/Documenti/Tesi/Codice/non_spatial_simple_model/metabolic_matrix.csv', index=True, mode='w')
 
-    return consumer_preference_matrix, inhibition_matrix, nor_metabolic_matrix, combined_matrix
+    return consumer_preference_matrix, inhibition_matrix, nor_metabolic_matrix, tprod_matrix, combined_matrix
 
 
 
