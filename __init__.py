@@ -41,6 +41,6 @@ y_0 = [param_dict['N_0'],param_dict['R_0'],param_dict['T_0']]
 community = Community(y_0,[dNdt,dR_ss,dR_ss_sep,dT_ss_sep],param_dict,matrices)
 
 # run model
-community.run_steady_state()
+community.run_steady_state_sep()
 
 

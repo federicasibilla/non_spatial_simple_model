@@ -37,12 +37,14 @@ class Community:
 
         self.cp,self.inh,self.met,self.tprod,self.comb = matrices
 
+    # Function for running the model with metabolism dynamics for resources and toxins
     def run_steady_state(self):
         
         return run_model_steadystate(self.dRT, self.dN, np.concatenate([self.N,self.R,self.T]), len(self.N), len(self.R),
                                      self.cp,self.inh, self.met, self.comb, self.p['g'], self.p['m'], self.p['w'], self.p['w_t'], self.p['l'], self.p['l_t'],
                                      self.p['k'], self.p['sig_max'], self.p['tau'], self.p['tau_t'], self.p['tau_dil'])
 
+    # function for running the model with separate dynamics for resources and toxins
     def run_steady_state_sep(self):
         
         return run_model_steadystate_sep(self.dR, self.dT, self.dN, np.concatenate([self.N,self.R,self.T]), len(self.N),

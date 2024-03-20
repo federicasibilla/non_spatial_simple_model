@@ -10,6 +10,8 @@ Contains:
     ------------------------------------------------------------------------------------------------------------------------------------
     - dNdt: differential equation for species 
     - dR_ss: function to use when wanting to solve for nutrients steady state
+    - dT_ss_sep: function to implement resource dynamics separately from toxins
+    - dR_ss_sep: function to implement toxins dynamics independently from metabolism
 
 """
 import pandas            as pd

@@ -3,7 +3,7 @@ File for defining the model, optimization/ integration type
 
 Contains:
     - run_model_steadystate: model without integrating R but using the steady state by finding zeros of the differential equation
-    - run_model_steadystate_sep: 
+    - run_model_steadystate_sep: model with steady state calculation for resource and toxins, but using two separate dynamical equations
 
 """
 
@@ -92,6 +92,8 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
 
     return np.array(N), np.array(R)
 
+
+#-----------------------------------------------------------------------------------------------------------------------------
 
 # model with separate dynamics for R and T
 
