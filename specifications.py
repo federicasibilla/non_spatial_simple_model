@@ -16,41 +16,48 @@ from make_network import *
 import scipy
 
 # ------------------------------------------------------------------------------------------------------
+
 # DEFINE CLASS FOR THE COMMUNITY
+
 class Community:
     def __init__(self,init_state,dynamics,parameters,matrices):
-
-        N_0 = init_state[0]
-        R_0 = init_state[1]
-        T_0 = init_state[2]
+        
+        N_0 = init_state[0] # initial species density
+        R_0 = init_state[1] # initial resources density
+        T_0 = init_state[2] # initial toxins density
 
         self.N = N_0.copy()
         self.R = R_0.copy()
         self.T = T_0.copy()
 
+        # extract species and chemicals dynamics
         self.dN  = dynamics[0]
         self.dRT = dynamics[1]
         self.dR  = dynamics[2]
         self.dT  = dynamics[3]
 
+        # extract parameters from dictionary
         self.p = parameters.copy()
 
+        # ectract matrices for uptake, production, metabolism, inhibition
         self.cp,self.inh,self.met,self.tprod,self.comb = matrices
 
     # Function for running the model with metabolism dynamics for resources and toxins
     def run_steady_state(self):
         
         return run_model_steadystate(self.dRT, self.dN, np.concatenate([self.N,self.R,self.T]), len(self.N), len(self.R),
-                                     self.cp,self.inh, self.met, self.comb, self.p['g'], self.p['m'], self.p['w'], self.p['w_t'], self.p['l'], self.p['l_t'],
-                                     self.p['k'], self.p['sig_max'], self.p['tau'], self.p['tau_t'], self.p['tau_dil'])
+                                     self.cp,self.inh, self.met, self.comb, self.p['g'], self.p['m'], self.p['w'], self.p['w_t'], self.p['l'], self.p['l_t'],self.p['tau'])
 
     # function for running the model with separate dynamics for resources and toxins
     def run_steady_state_sep(self):
         
-        return run_model_steadystate_sep(self.dR, self.dT, self.dN, np.concatenate([self.N,self.R,self.T]), len(self.N),
-                                         len(self.R), self.cp, self.inh, self.met, self.tprod, self.p['g'], self.p['m'], self.p['w'],
-                                          self.p['l'], self.p['k'],  self.p['sig_max'], self.p['tau'], self.p['tau_dil'])
+        return run_model_steadystate_sep(self.dR, self.dT, self.dN, np.concatenate([self.N,self.R,self.T]), 
+                                        len(self.N),len(self.R), self.cp, self.inh, self.met, self.tprod, self.p['g'], self.p['m'], self.p['w'],
+                                        self.p['l'], self.p['tau'])
+                                          
 # ------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------
+
 # COMPETITION FOR ONE RESOURCE
 
 # nodes dictionary (species)
@@ -81,11 +88,7 @@ parameters_dict_cfr = { # initial resource availability
                         # initial species abundance                                                
                         'N_0_cfr' : np.array([100,100,1]), 
                         # inverse reinsertion rate                                                  
-                        'tau_cfr' : np.array([1]), 
-                        # toxins inverse insetrion rate
-                        'tau_t_cfr' : np.array([]),
-                        # dilution time
-                        'tau_dil_cfr' : 100,
+                        'tau_cfr' : 10,
                         # intrinsic growth rates                                              
                         'g_cfr' : np.array([1,0.8,0.1]), 
                         # maintainance energy requirements                                                    
@@ -97,14 +100,11 @@ parameters_dict_cfr = { # initial resource availability
                         # energy content of resources                                               
                         'w_cfr' : np.array([1]), 
                         # energy content (negative) in toxins i.e. toxicity (?
-                        'w_t_cfr' : np.array([]),
-                        # maximal absorption for Monod function
-                        'sig_max_cfr' : 1,   
-                        # vector with toxins maximal absorption
-                        'k_cfr' : np.array([])          
+                        'w_t_cfr' : np.array([])         
 }
 
 # ------------------------------------------------------------------------------------------------------
+
 # CROSS FEEDING
 
 # nodes dictionary (species)
@@ -113,8 +113,8 @@ species_dict_cf = {'A' : 'specialist1',
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_cf = {'x' : ['AB', 0.4],
-                     'y' : ['BA', 0.4]                                        
+nutrients_dict_cf = {'x' : ['AB', 0.3],
+                     'y' : ['BA', 0.5]                                        
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
@@ -129,19 +129,15 @@ def get_matrices_cf():
 
 # fix parameters
 parameters_dict_cf = { # initial resource availability
-                        'R_0_cf' : np.array([2,2]),   
+                        'R_0_cf' : np.array([100,100]),   
                         # initial toxins concentration
                         'T_0_cf' : np.array([]),
                         # initial species abundance                                                
-                        'N_0_cf' : np.array([2,2]), 
+                        'N_0_cf' : np.array([100,100]), 
                         # inverse reinsertion rate                                                  
-                        'tau_cf' : np.array([1,1]), 
-                        # toxins inverse insetrion rate
-                        'tau_t_cf' : np.array([]),
-                        # dilution time
-                        'tau_dil_cf' : 100,
+                        'tau_cf' : 10,
                         # intrinsic growth rates                                              
-                        'g_cf' : np.array([1,0.8]), 
+                        'g_cf' : np.array([1,0.6]), 
                         # maintainance energy requirements                                                    
                         'm_cf' : np.array([0.1,0.1]),  
                         # external leakage of nutrients                                                         
@@ -151,14 +147,11 @@ parameters_dict_cf = { # initial resource availability
                         # energy content of resources                                               
                         'w_cf' : np.array([1,1]), 
                         # energy content (negative) in toxins i.e. toxicity (?
-                        'w_t_cf' : np.array([]),
-                        # maximal absorption for Monod function
-                        'sig_max_cf' : 1,   
-                        # vector with toxins maximal absorption
-                        'k_cf' : np.array([])          
+                        'w_t_cf' : np.array([])         
 }
 
 # ------------------------------------------------------------------------------------------------------
+
 # PM
 
 # nodes dictionary (species)
@@ -166,19 +159,18 @@ species_dict_pm = {'A' : 'generalist',
                    'B' : 'specialist1',
                    'C' : 'specialist2',
                    'D' : 'specialist3',
-                   'E' : 'bad specialist'
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_pm = {'x' : ['AB,CA,DA,DE', 0.2, 0.2,0.2,0.2],
-                     'y' : ['AB', 0.4],
-                     'z' : ['BC', 0.4],
-                     'w' : ['CD', 0.4]
+nutrients_dict_pm = {'x' : ['AB', 0.4],
+                     'y' : ['BC', 0.4],
+                     'z' : ['CD', 0.4],
+                     'w' : ['CA', 0.8]
 
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
-toxins_dict_pm = { 't1' :['DA', 0.1]
+toxins_dict_pm = { 't' : ['DC',0.1]
 }
 
 # make network consumer preferences matrix and metabolic matrix
@@ -191,29 +183,21 @@ def get_matrices_pm():
 parameters_dict_pm = { # initial resource availability
                         'R_0_pm' : np.array([100,100,100,100]),   
                         # initial toxins concentration
-                        'T_0_pm' : np.array([1]),
+                        'T_0_pm' : np.array([0]),
                         # initial species abundance                                                
-                        'N_0_pm' : np.array([100,100,100,100,100]), 
+                        'N_0_pm' : np.array([100,100,100,100]), 
                         # inverse reinsertion rate                                                  
-                        'tau_pm' : np.array([1,1,1,1]), 
-                        # toxins inverse insetrion rate
-                        'tau_t_pm' : np.array([10000]),
-                        # dilution time
-                        'tau_dil_pm' : 1000,
+                        'tau_pm' : 10,
                         # intrinsic growth rates                                              
-                        'g_pm' : np.array([0.2,1,1,1,1]), 
+                        'g_pm' : np.array([1,0.8,1,0.5]), 
                         # maintainance energy requirements                                                    
-                        'm_pm' : np.array([0.1,0.,0.1,0.1,0.1]),  
+                        'm_pm' : np.array([0.1,0.1,0.1,0.1]),  
                         # external leakage of nutrients                                                         
-                        'l_pm' : np.array([0.8,0.8,0.8,0.8]),  
+                        'l_pm' : np.array([1,1,1,1]),  
                         # toxins leakage
-                        'l_t_pm' : np.array([1]),
+                        'l_t_pm' : np.array([0.8]),
                         # energy content of resources                                               
-                        'w_pm' : np.array([1,0.5,1,1]), 
+                        'w_pm' : np.array([1,1,1,1]), 
                         # energy content (negative) in toxins i.e. toxicity (?)
-                        'w_t_pm' : np.array([0.1]),
-                        # maximal absorption for Monod function
-                        'sig_max_pm' : 1,   
-                        # vector with toxins maximal absorption
-                        'k_pm' : np.array([3])
+                        'w_t_pm' : np.array([0.2])
 }

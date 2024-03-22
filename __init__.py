@@ -21,7 +21,7 @@ importlib.reload(specifications)
 
 # prerape parameters dictionary
 # parameters list of keys
-keys_list = ['R_0','T_0','N_0','tau','tau_t','tau_dil','g','m','l','l_t','w','w_t','sig_max','k']
+keys_list = ['R_0','T_0','N_0','tau','g','m','l','l_t','w','w_t']
 
 param_dict_specific = specifications.parameters_dict_pm
 param_dict = {}

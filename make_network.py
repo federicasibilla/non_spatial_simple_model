@@ -40,11 +40,13 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
                 attr = nutrient_attr
                 edges.append(edge)
                 labels.append(attr)
+
     # create directed graph with weighted edges
     G = nx.DiGraph()
     G.add_nodes_from(species_dict)
     for i, (source, target, _) in enumerate(edges):
         G.add_edge(source, target, weight=edges[i][2], label=labels[i])
+
     # visualize graph
     agraph = to_agraph(G)
     for u, v, data in G.edges(data=True):
@@ -70,11 +72,13 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
                 attr = toxin_attr
                 edges_t.append(edge)
                 labels_t.append(attr)
+
     # create directed graph with weighted edges
     G_T = nx.DiGraph()
     G_T.add_nodes_from(species_dict)
     for i, (source, target, _) in enumerate(edges_t):
         G_T.add_edge(source, target, weight=edges_t[i][2], label=labels_t[i])
+        
     # visualize graph
     agraph = to_agraph(G_T)
     for u, v, data in G_T.edges(data=True):
