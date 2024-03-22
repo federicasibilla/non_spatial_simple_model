@@ -23,14 +23,14 @@ importlib.reload(specifications)
 # parameters list of keys
 keys_list = ['R_0','T_0','N_0','tau','g','m','l','l_t','w','w_t']
 
-param_dict_specific = specifications.parameters_dict_pm
+param_dict_specific = specifications.parameters_dict_cf
 param_dict = {}
 for old_key, new_key in zip(param_dict_specific.keys(), keys_list):
         param_dict[new_key] = param_dict_specific[old_key]
 
 
 # prepare matrices or import them
-matrices = get_matrices_pm()
+matrices = get_matrices_cf()
 # matrices file paths
 # cp_mat, inh_mat, comb_mat, met_mat = 
 
@@ -41,6 +41,6 @@ y_0 = [param_dict['N_0'],param_dict['R_0'],param_dict['T_0']]
 community = Community(y_0,[dNdt,dR_ss,dR_ss_sep,dT_ss_sep],param_dict,matrices)
 
 # run model
-community.run_steady_state_sep()
+community.run_steady_state()
 
 

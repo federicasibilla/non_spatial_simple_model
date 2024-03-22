@@ -40,7 +40,7 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
         T_ss = RT_ss[N_nut:]
 
         # integrate N one step
-        N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, m,tau))
+        N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, w_t, m,tau))
         N_out.y[N_out.y<2]=0
 
         # update steady state condition 
@@ -94,7 +94,7 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
 #-----------------------------------------------------------------------------------------------------------------------------
 # model with separate dynamics for R and T
 
-def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, tox_matrix, met_matrix, tprod_matrix, g, m, w, l, tau):
+def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, tox_matrix, met_matrix, tprod_matrix, g, m, w, w_t, l, tau):
     
     # extract initial vectors, save elements vector to use for reinsertion
     N_0 = y_init[:N_species]
@@ -117,7 +117,7 @@ def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, t
         T_ss = scipy.optimize.least_squares(dT, T_0, args=(N_0, tox_matrix, tprod_matrix, tau), bounds=(0,np.inf)).x
 
         # integrate N one step
-        N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, m, tau))
+        N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, w_t, m, tau))
         N_out.y[N_out.y<2]=0
 
         # check condition for steady state

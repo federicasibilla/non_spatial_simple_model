@@ -60,14 +60,14 @@ def J_out(cp_matrix, R, l, w, met_matrix):
 # takes  : t; time; N, state vector of species; R, state vector of nutrients; cp_matrix, uptake rates matrix; g, intrinsic growth rate vector; m, maintainence energy requirement vector for each species
 # returns: vector of dimension number of species, containing differential growth rate for each species 
 
-def dNdt(t, N, R, T, cp_matrix, tox_matrix, g, l, w, m, tau):
+def dNdt(t, N, R, T, cp_matrix, tox_matrix, g, l, w, w_t, m, tau):
 
   # treat extintion
   N_masked = N.copy()
   N_masked[N < 10] = 0
 
   # calculate inhibition term
-  inhibition = tox_matrix*T/(1+tox_matrix*T)
+  inhibition = w_t*tox_matrix*T/(1+tox_matrix*T)
 
   return g*N_masked*(np.sum(J_growth(cp_matrix,R,l, w),axis=1)-m-np.sum(inhibition,axis=1)) - 1/tau*N_masked
 

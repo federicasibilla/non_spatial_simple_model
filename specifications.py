@@ -53,7 +53,7 @@ class Community:
         
         return run_model_steadystate_sep(self.dR, self.dT, self.dN, np.concatenate([self.N,self.R,self.T]), 
                                         len(self.N),len(self.R), self.cp, self.inh, self.met, self.tprod, self.p['g'], self.p['m'], self.p['w'],
-                                        self.p['l'], self.p['tau'])
+                                        self.p['w_t'], self.p['l'], self.p['tau'])
                                           
 # ------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------
@@ -113,8 +113,8 @@ species_dict_cf = {'A' : 'specialist1',
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_cf = {'x' : ['AB', 0.3],
-                     'y' : ['BA', 0.5]                                        
+nutrients_dict_cf = {'x' : ['AB', 0.6],
+                     'y' : ['BA', 0.6]                                        
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
@@ -129,19 +129,19 @@ def get_matrices_cf():
 
 # fix parameters
 parameters_dict_cf = { # initial resource availability
-                        'R_0_cf' : np.array([100,100]),   
+                        'R_0_cf' : np.array([500,500]),   
                         # initial toxins concentration
                         'T_0_cf' : np.array([]),
                         # initial species abundance                                                
                         'N_0_cf' : np.array([100,100]), 
                         # inverse reinsertion rate                                                  
-                        'tau_cf' : 10,
+                        'tau_cf' : 50,
                         # intrinsic growth rates                                              
                         'g_cf' : np.array([1,0.6]), 
                         # maintainance energy requirements                                                    
                         'm_cf' : np.array([0.1,0.1]),  
                         # external leakage of nutrients                                                         
-                        'l_cf' : np.array([0.8, 0.8]),  
+                        'l_cf' : np.array([0.5, 0.5]),  
                         # toxins leakage
                         'l_t_cf' : np.array([]),
                         # energy content of resources                                               
