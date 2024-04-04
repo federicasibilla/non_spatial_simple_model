@@ -51,7 +51,7 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     agraph = to_agraph(G)
     for u, v, data in G.edges(data=True):
         agraph.add_edge(u, v, label=data['label'], penwidth=data['weight'] * 3)
-    agraph.layout(prog='neato')
+    agraph.layout(prog='dot', args='-GK=0.5 -Gsep=3 -Ncolor=lightblue -Nstyle=filled -Npenwidth=2 -Ecolor=gray -Nnodesep=0.1')
     img = agraph.draw(format='png')
     with open('network_image.png', 'wb') as f:
         f.write(img)
@@ -83,7 +83,7 @@ def make_net_mat(species_dict, nutrients_dict, toxins_dict):
     agraph = to_agraph(G_T)
     for u, v, data in G_T.edges(data=True):
         agraph.add_edge(u, v, label=data['label'], penwidth=data['weight'] * 3)
-    agraph.layout(prog='neato')
+    agraph.layout(prog='dot', args='-GK=0.5 -Gsep=3 -Ncolor=lightblue -Nstyle=filled -Npenwidth=2 -Ecolor=gray -Nnodesep=0.1')
     img = agraph.draw(format='png')
     with open('inh_network_image.png', 'wb') as f:
         f.write(img)

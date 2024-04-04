@@ -32,7 +32,7 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
     diff = N_0
     N_prev = N_0
  
-    while((np.abs(diff) > 0.005).any()):
+    while((np.abs(diff) > 0.001*y_init[:N_species]).any()):
 
         # solve steady state for nutrients and toxins
         RT_ss = scipy.optimize.least_squares(dR, RT_0, args=(N_0, com_matrix, met_matrix, RT_init[:N_nut], RT_init[N_nut:], tau, w, w_t, l, l_t),bounds=(0,np.inf)).x
@@ -41,7 +41,6 @@ def run_model_steadystate(dR, dN, y_init, N_species, N_nut, cp_matrix, tox_matri
 
         # integrate N one step
         N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, w_t, m,tau))
-        N_out.y[N_out.y<2]=0
 
         # update steady state condition 
         diff = N_prev-N_out.y[:, -1]
@@ -110,7 +109,7 @@ def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, t
     diff = N_0
     N_prev = N_0
 
-    while((np.abs(diff) > 0.005).any()):
+    while((np.abs(diff) > 0.001*y_init[:N_species]).any()):
 
         # solve steady state for nutrients and toxins
         R_ss = scipy.optimize.least_squares(dR, R_0, args=(N_0, cp_matrix, met_matrix, R_init,w, tau, l), bounds=(0,np.inf),loss='huber').x
@@ -118,7 +117,6 @@ def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, t
 
         # integrate N one step
         N_out = scipy.integrate.solve_ivp(dN, (0,1), N_0, method='RK45', args=(R_ss, T_ss, cp_matrix, tox_matrix, g, l, w, w_t, m, tau))
-        N_out.y[N_out.y<2]=0
 
         # check condition for steady state
         diff = N_prev-N_out.y[:, -1]

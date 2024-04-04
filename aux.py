@@ -62,14 +62,10 @@ def J_out(cp_matrix, R, l, w, met_matrix):
 
 def dNdt(t, N, R, T, cp_matrix, tox_matrix, g, l, w, w_t, m, tau):
 
-  # treat extintion
-  N_masked = N.copy()
-  N_masked[N < 10] = 0
-
   # calculate inhibition term
   inhibition = w_t*tox_matrix*T/(1+tox_matrix*T)
 
-  return g*N_masked*(np.sum(J_growth(cp_matrix,R,l, w),axis=1)-m-np.sum(inhibition,axis=1)) - 1/tau*N_masked
+  return g*N*(np.sum(J_growth(cp_matrix,R,l, w),axis=1)-m-np.sum(inhibition,axis=1)) - 1/tau*N
 
 
 # dR_ss  : differential function to use for steady state implementation of nutrients dynamics

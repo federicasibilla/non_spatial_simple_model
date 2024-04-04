@@ -86,11 +86,11 @@ parameters_dict_cfr = { # initial resource availability
                         # initial toxins concentration
                         'T_0_cfr' : np.array([]),
                         # initial species abundance                                                
-                        'N_0_cfr' : np.array([100,100,1]), 
+                        'N_0_cfr' : np.array([1,1,1]), 
                         # inverse reinsertion rate                                                  
-                        'tau_cfr' : 10,
+                        'tau_cfr' : 100,
                         # intrinsic growth rates                                              
-                        'g_cfr' : np.array([1,0.8,0.1]), 
+                        'g_cfr' : np.array([1,0.8,0.]), 
                         # maintainance energy requirements                                                    
                         'm_cfr' : np.array([0.1,0.1,0.]),  
                         # external leakage of nutrients                                                         
@@ -157,20 +157,17 @@ parameters_dict_cf = { # initial resource availability
 # nodes dictionary (species)
 species_dict_pm = {'A' : 'generalist',
                    'B' : 'specialist1',
-                   'C' : 'specialist2',
-                   'D' : 'specialist3',
+                   'M' : 'resource'
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_pm = {'x' : ['AB', 0.4],
-                     'y' : ['BC', 0.4],
-                     'z' : ['CD', 0.4],
-                     'w' : ['CA', 0.8]
+nutrients_dict_pm = {'x' : ['MA,MB', 0.4,0.4]
 
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
-toxins_dict_pm = { 't' : ['DC',0.1]
+toxins_dict_pm = { 't1' : ['AB',0.1],
+                   't2' : ['BA',0.1]
 }
 
 # make network consumer preferences matrix and metabolic matrix
@@ -181,23 +178,23 @@ def get_matrices_pm():
 
 # fix parameters
 parameters_dict_pm = { # initial resource availability
-                        'R_0_pm' : np.array([100,100,100,100]),   
+                        'R_0_pm' : np.array([100]),   
                         # initial toxins concentration
-                        'T_0_pm' : np.array([0]),
+                        'T_0_pm' : np.array([100,100]),
                         # initial species abundance                                                
-                        'N_0_pm' : np.array([100,100,100,100]), 
+                        'N_0_pm' : np.array([1.001,1,1]), 
                         # inverse reinsertion rate                                                  
-                        'tau_pm' : 10,
+                        'tau_pm' : 100,
                         # intrinsic growth rates                                              
-                        'g_pm' : np.array([1,0.8,1,0.5]), 
+                        'g_pm' : np.array([0.5,0.5,0.]), 
                         # maintainance energy requirements                                                    
-                        'm_pm' : np.array([0.1,0.1,0.1,0.1]),  
+                        'm_pm' : np.array([0.1,0.1,0.]),  
                         # external leakage of nutrients                                                         
-                        'l_pm' : np.array([1,1,1,1]),  
+                        'l_pm' : np.array([0.8]),  
                         # toxins leakage
-                        'l_t_pm' : np.array([0.8]),
+                        'l_t_pm' : np.array([0.3,0.3]),
                         # energy content of resources                                               
-                        'w_pm' : np.array([1,1,1,1]), 
+                        'w_pm' : np.array([1]), 
                         # energy content (negative) in toxins i.e. toxicity (?)
-                        'w_t_pm' : np.array([0.2])
+                        'w_t_pm' : np.array([1,1])
 }
