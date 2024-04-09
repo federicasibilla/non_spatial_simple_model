@@ -31,7 +31,7 @@ def out_replenishment(tau, R_0, R):
 # returns    : matrix of the same dimensions as cp_matrix with uptake of each nutrient and species as entries
 
 def up_function(cp_matrix, R):                                                  
-  return np.maximum(0, cp_matrix * R / (1 + cp_matrix * R))
+  return np.maximum(0, cp_matrix * R / (1 + R))
 
 # J_in   : function to specify how uptake is converted into energy flux
 # takes  : cp_matrix, matrix of base uptake rates that has species as rows and nutrients as columns; R, state vector of concentrations; w, externally fixed vectors with parameters for the conversion of energy flux to nutrient flux
@@ -64,8 +64,9 @@ def dNdt(t, N, R, T, cp_matrix, tox_matrix, g, l, w, w_t, m, tau):
 
   # calculate inhibition term
   inhibition = w_t*tox_matrix*T/(1+tox_matrix*T)
-
-  return g*N*(np.sum(J_growth(cp_matrix,R,l, w),axis=1)-m-np.sum(inhibition,axis=1)) - 1/tau*N
+  k=20
+  
+  return g*N*(np.sum(J_growth(cp_matrix,R,l, w)*k,axis=1)-m-np.sum(inhibition*k,axis=1)) - 1/tau*N
 
 
 # dR_ss  : differential function to use for steady state implementation of nutrients dynamics

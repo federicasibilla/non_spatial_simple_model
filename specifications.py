@@ -161,13 +161,13 @@ species_dict_pm = {'A' : 'generalist',
 }
 # edges dictionary (nutrients)
 # for each nutrients who produces it and all the species that use it
-nutrients_dict_pm = {'x' : ['MA,MB', 0.4,0.4]
+nutrients_dict_pm = {'x' : ['MA,MB', 0.5,0.5]
 
 }
 # define toxins dictionary
 # for each nutrients who produces it and all the species that use it
-toxins_dict_pm = { 't1' : ['AB',0.1],
-                   't2' : ['BA',0.1]
+toxins_dict_pm = { 't1' : ['AB',0.3],
+                   't2' : ['BA',0.3]
 }
 
 # make network consumer preferences matrix and metabolic matrix
@@ -178,23 +178,23 @@ def get_matrices_pm():
 
 # fix parameters
 parameters_dict_pm = { # initial resource availability
-                        'R_0_pm' : np.array([100]),   
+                        'R_0_pm' : np.array([10]),   
                         # initial toxins concentration
-                        'T_0_pm' : np.array([100,100]),
+                        'T_0_pm' : np.array([1,1]),
                         # initial species abundance                                                
-                        'N_0_pm' : np.array([1.001,1,1]), 
+                        'N_0_pm' : np.array([1.0,1.001,1]), 
                         # inverse reinsertion rate                                                  
-                        'tau_pm' : 100,
+                        'tau_pm' : 1,
                         # intrinsic growth rates                                              
-                        'g_pm' : np.array([0.5,0.5,0.]), 
+                        'g_pm' : np.array([0.8,0.8,0.]), 
                         # maintainance energy requirements                                                    
-                        'm_pm' : np.array([0.1,0.1,0.]),  
+                        'm_pm' : np.array([0.3,0.3,0.]),  
                         # external leakage of nutrients                                                         
                         'l_pm' : np.array([0.8]),  
                         # toxins leakage
                         'l_t_pm' : np.array([0.3,0.3]),
                         # energy content of resources                                               
-                        'w_pm' : np.array([1]), 
+                        'w_pm' : np.array([0.9]), 
                         # energy content (negative) in toxins i.e. toxicity (?)
-                        'w_t_pm' : np.array([1,1])
+                        'w_t_pm' : np.array([0.8,0.8])
 }

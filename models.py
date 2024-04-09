@@ -109,7 +109,7 @@ def run_model_steadystate_sep(dR, dT, dN, y_init, N_species, N_nut, cp_matrix, t
     diff = N_0
     N_prev = N_0
 
-    while((np.abs(diff) > 0.001*y_init[:N_species]).any()):
+    while((np.abs(diff) > 0.0001*y_init[:N_species]).any()):
 
         # solve steady state for nutrients and toxins
         R_ss = scipy.optimize.least_squares(dR, R_0, args=(N_0, cp_matrix, met_matrix, R_init,w, tau, l), bounds=(0,np.inf),loss='huber').x
